@@ -16,6 +16,7 @@ class Model {
   create(entry) {
     entry.id = uuid();
     let record = this.sanitize(entry);
+    // console.log(record);
     if (record.id) { this.database.push(record); }
     return Promise.resolve(record);
   }
@@ -28,7 +29,8 @@ class Model {
 
   delete(id) {
     this.database = this.database.filter((record) => record.id !== id);
-    return Promise.resolve();
+    console.log(this.database);
+    return Promise.resolve(this.database);
   }
 
 	// Vinicio - this would be our 'isValid', but it changes the data if it finds anything wrong
@@ -38,18 +40,33 @@ class Model {
     let record = {};
 		// Vinicio - this code is checking that properties are present in objects
 		// Vinicio - your goal is to change that to check for types as well
-		// Please take inspiration from lab 02
+    // Please take inspiration from lab 02
 
     Object.keys(this.schema).forEach(field => {
       if (this.schema[field].required) {
         if (entry[field]) {
+          // console.log('got in there is entry[field]');
+
+          if(typeof entry[field] === this.schema[field].type){
+            // console.log('got in typecheck for entry[field]',entry[field]);
           record[field] = entry[field];
+
+          }else{
+            // console.log('entry[field] type check failed',entry[field]);
+            valid = false;
+          }
+
         } else {
+          // console.log('there is no entry[field] ',entry[field]);
           valid = false;
         }
       }
       else {
-        record[field] = entry[field];
+        // console.log('got in no required');
+        if(typeof entry[field] === this.schema[field].type){
+          // console.log('entry[field] type check');
+          record[field] = entry[field];
+        }  
       }
     });
 
