@@ -1,47 +1,9 @@
 'use strict';
 
-const uuid = require('uuid/v4');
-
-class Model {
-
-  constructor() {
-    this.database = [];
-  }
-
-  get(id) {
-    let response = id ? this.database.filter((record) => record.id === id) : this.database;
-    return Promise.resolve(response);
-  }
-
-  create(entry) {
-    // console.log('got in create and this is entry', entry);
-    entry.id = uuid();
-    // console.log('got in create and this is entryid', entry.id);
-
-    let record = this.sanitize(entry);
-    if (record.id) { this.database.push(record); }
-    return Promise.resolve(record);
-  }
-
-  update(id, entry) {
-    let record = this.sanitize(entry);
-    // console.log('this is in the update function',record);
-    // entry.id = uuid();
-    if (record.id) { this.database = this.database.map((item) => (item.id === id) ? record : item); }
-    return Promise.resolve(record);
-  }
-
-  delete(id) {
-    this.database = this.database.filter((record) => record.id !== id);
-    // console.log(this.database);
-    return Promise.resolve(this.database);
-  }
-
-
-
-	// Vinicio - this would be our 'isValid', but it changes the data if it finds anything wrong
+class Validate {
+// Vinicio - this would be our 'isValid', but it changes the data if it finds anything wrong
   sanitize(entry) {
-    // console.log('got in sanitize', entry);
+    console.log('got in sanitize', entry);
     let valid = true;
     let record = {};
 		// Vinicio - this code is checking that properties are present in objects
@@ -78,7 +40,6 @@ class Model {
 
     return valid ? record : undefined;
   }
-
 }
 
-module.exports = Model;
+module.exports = Validate;
