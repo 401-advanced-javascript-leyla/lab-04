@@ -6,8 +6,8 @@ class Products extends DataModel {
   constructor() {
     super();
     this.schema = {
-        id: { required: true, type:  'string' },
-        category_id: { required: true, type: 'number'},
+        id: { type:  'string' },
+        product_id: { required: true, type: 'number'},
         name: { required: true, type: 'string' },
         price: {type: 'number'},
         weight: {type: 'number'},
